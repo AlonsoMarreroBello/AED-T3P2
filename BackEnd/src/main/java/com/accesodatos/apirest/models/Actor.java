@@ -2,6 +2,9 @@ package com.accesodatos.apirest.models;
 
 import java.sql.Timestamp;
 
+/**
+ * Class used for representing actors.
+ */
 public class Actor {
 	
 	private long id;

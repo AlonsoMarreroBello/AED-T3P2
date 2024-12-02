@@ -12,7 +12,10 @@ import org.springframework.stereotype.Repository;
 import com.accesodatos.apirest.models.Actor;
 import com.accesodatos.apirest.repository.ActorRepository;
 
-
+/**
+ * Implementation of the {@link ActorRepository} interface that provides CRUD operations for the {@link Actor} entity.
+ * This class interacts with the database using {@link JdbcTemplate} to execute SQL queries for adding, updating, retrieving, and deleting actors.
+ */
 @Repository 
 public class ActorRepositoryImpl implements ActorRepository {
 
@@ -26,6 +29,9 @@ public class ActorRepositoryImpl implements ActorRepository {
 	private final String SQL_UPDATE = "UPDATE actor SET first_name=?, last_name=? WHERE actor_id = ?";
 	private final String SQL_DELETE = "DELETE FROM actor WHERE actor_id = ?";
 	
+	/**
+	 * RowMapper for mapping ResutltSet rows to Actor objects.
+	 */
 	private RowMapper<Actor> rowMapper = (ResultSet rs, int rowNum) -> {
         Actor actor = new Actor();
         actor.setId(rs.getLong("actor_id"));
@@ -35,23 +41,35 @@ public class ActorRepositoryImpl implements ActorRepository {
         return actor;
     };
 	
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public int addActor(Actor actor) {
 		return jdbcTemplate.update(SQL_INSERT, 
 				new Object[] {actor.getFirstName(), actor.getLastName()});
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	public int updateActor(Actor actor) {
 		return jdbcTemplate.update(SQL_UPDATE, 
 				new Object[] {actor.getFirstName(), actor.getLastName(), actor.getId()});
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	public List<Actor> getAllActors() {
 		return jdbcTemplate.query(SQL_SELECT_ALL, rowMapper);
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	public Actor getActorById(long id) {
 		try {
@@ -65,12 +83,18 @@ public class ActorRepositoryImpl implements ActorRepository {
 		}
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	public int deleteActor(long id) {
 		return jdbcTemplate.update(SQL_DELETE, 
 				new Object[] {id});
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	public List<Actor> getActorsByName(String name) {
 		try {

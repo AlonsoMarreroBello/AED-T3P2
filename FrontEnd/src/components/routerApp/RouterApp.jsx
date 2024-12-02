@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 
-import CustomTable from "../customTable/CustomTable";
 import Footer from "../layout/Footer";
 import Header from "../layout/Header";
 import Home from "../pages/Home";
+import ActorsList from "../pages/ActorsList";
 
 const RouterApp = () => {
   return (
@@ -15,13 +15,12 @@ const RouterApp = () => {
           path="/actors"
           element={
             <div>
-              Los rollos
-              <CustomTable />
+              <ActorsList />
             </div>
           }
         />
         <Route
-          path="/tutorials/new"
+          path="/actors/new"
           element={<div>El cacharro este es para agregar actores</div>}
         />
       </Routes>
