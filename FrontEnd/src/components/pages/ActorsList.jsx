@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 
+import styles from "./ActorList.Styles";
 import TutorialService from "../../service/tutorial.service";
 import Loader from "../loader/Loader";
 import { Button } from "@mui/material";
+import CustomEditModal from "../customModals/CustomEditModal";
+import CustomDeleteModal from "../customModals/CustomDeleteModel";
 
 const paginationModel = { page: 0, pageSize: 10 };
 
@@ -21,7 +24,7 @@ const ActorsList = () => {
     {
       field: "lastUpdate",
       headerName: "Last update",
-      width: 180,
+      width: 220,
       valueFormatter: (value) => {
         // Verificar si el valor es válido antes de crear un objeto Date
         const date = new Date(value);
@@ -35,6 +38,7 @@ const ActorsList = () => {
           weekday: "long", // Día de la semana completo (ej. Lunes)
           day: "numeric", // Día del mes (ej. 2)
           month: "long", // Mes completo (ej. diciembre)
+          year: "numeric", // Añadir el año (ej. 2024)
         };
 
         // Formatear la fecha
@@ -53,14 +57,14 @@ const ActorsList = () => {
       sortable: false,
       hideable: false,
       renderCell: (params) => (
-        <>
+        <div>
           <Button onClick={() => handleEdit(params.row.id)} color="primary">
-            <p>Editar</p>
+            <CustomEditModal />
           </Button>
           <Button onClick={() => handleDelete(params.row.id)} color="secondary">
-            <p>Eliminar</p>
+            <CustomDeleteModal />
           </Button>
-        </>
+        </div>
       ),
     },
   ];
@@ -123,7 +127,7 @@ const ActorsList = () => {
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10, 50, 100]}
             disableRowSelectionOnClick
-            sx={{ border: 0 }}
+            sx={styles.dataGrid}
           />
         </Paper>
       )}
