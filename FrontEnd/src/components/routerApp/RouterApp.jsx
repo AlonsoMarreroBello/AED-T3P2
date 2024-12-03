@@ -4,6 +4,7 @@ import Footer from "../layout/Footer";
 import Header from "../layout/Header";
 import Home from "../pages/Home";
 import ActorsList from "../pages/ActorsList";
+import ActorForm from "../pages/ActorForm";
 
 const RouterApp = () => {
   return (
@@ -21,7 +22,11 @@ const RouterApp = () => {
         />
         <Route
           path="/actors/new"
-          element={<div>El cacharro este es para agregar actores</div>}
+          element={
+            <div>
+              <ActorForm />
+            </div>
+          }
         />
       </Routes>
       <Footer />

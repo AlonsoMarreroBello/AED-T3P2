@@ -22,6 +22,27 @@ const ActorsList = () => {
       field: "lastUpdate",
       headerName: "Last update",
       width: 180,
+      valueFormatter: (value) => {
+        // Verificar si el valor es válido antes de crear un objeto Date
+        const date = new Date(value);
+
+        if (isNaN(date.getTime())) {
+          // Si el valor no es una fecha válida, devolver una cadena vacía o un valor predeterminado
+          return "Fecha inválida";
+        }
+
+        const options = {
+          weekday: "long", // Día de la semana completo (ej. Lunes)
+          day: "numeric", // Día del mes (ej. 2)
+          month: "long", // Mes completo (ej. diciembre)
+        };
+
+        // Formatear la fecha
+        const formatedDate = new Intl.DateTimeFormat("es-ES", options).format(
+          date
+        );
+        return formatedDate;
+      },
     },
     {
       field: "actions",
@@ -101,7 +122,7 @@ const ActorsList = () => {
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10, 50, 100]}
-            checkboxSelection
+            disableRowSelectionOnClick
             sx={{ border: 0 }}
           />
         </Paper>

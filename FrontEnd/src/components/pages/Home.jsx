@@ -7,7 +7,7 @@ const Home = () => {
       <h1>CRUD T3 P2</h1>
       <p>
         <a href={link} target={target}>
-          Listado de tutoriales
+          Listado de actores
         </a>
       </p>
     </div>
