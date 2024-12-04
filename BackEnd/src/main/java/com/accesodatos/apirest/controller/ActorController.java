@@ -140,7 +140,7 @@ public class ActorController {
 	 * @return A {@link ResponseEntity} with a success message or a not found status.
 	 */
 	@DeleteMapping("/actors/{id}")
-	public ResponseEntity<String> updateActor(@PathVariable("id") long id) {
+	public ResponseEntity<String> deleteActor(@PathVariable("id") long id) {
 		
 		Actor actorOld = actorService.getById(id);
 		

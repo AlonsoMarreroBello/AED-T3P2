@@ -1,5 +1,7 @@
+import NavBar from "../navBar/NavBar";
+
 const Header = () => {
-  return <h1 className="title">Tutorial Application</h1>;
+  return <NavBar text={"CRUD actores"} />;
 };
 
 export default Header;
