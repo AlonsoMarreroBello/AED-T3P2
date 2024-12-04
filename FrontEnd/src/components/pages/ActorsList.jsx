@@ -82,7 +82,6 @@ const ActorsList = () => {
     async function getActors() {
       try {
         const data = await TutorialService.aGetAll();
-        console.log("data acotrlist", data);
         setActors(data);
         setError(null);
       } catch (e) {

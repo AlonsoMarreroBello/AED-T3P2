@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { useState } from "react";
+import ActorForm from "../pages/ActorForm";
 
 const style = {
   position: "absolute",
@@ -41,12 +41,7 @@ export default function CustomEditModal() {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Esto edita cosas
-            </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
+            <ActorForm />
           </Box>
         </Fade>
       </Modal>
