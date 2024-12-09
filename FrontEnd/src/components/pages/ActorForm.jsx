@@ -1,13 +1,23 @@
-import { useState } from "react";
-import TutorialService from "../../service/tutorial.service";
+import { useEffect, useState } from "react";
+import TutorialService from "../../service/Actor.service";
 import AlertBox from "../alertBox/AlertBox";
+import PropTypes from "prop-types";
 
-const ActorForm = () => {
+const ActorForm = ({ actorData }) => {
   const [showMessage, setShowMessage] = useState(false);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
   });
+
+  useEffect(() => {
+    if (actorData) {
+      setForm({
+        firstName: actorData.firstName || "",
+        lastName: actorData.lastName || "",
+      });
+    }
+  }, [actorData]);
 
   const handleChange = (e) => {
     setForm({
@@ -19,8 +29,11 @@ const ActorForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(form);
+    console.log(actorData);
     if (form.firstName.trim() !== "" && form.lastName.trim() !== "") {
-      TutorialService.aCreate(form);
+      actorData === undefined
+        ? TutorialService.aCreate(form)
+        : TutorialService.aUpdate(form, actorData.id);
       setForm({
         firstName: "",
         lastName: "",
@@ -53,7 +66,9 @@ const ActorForm = () => {
           onChange={handleChange}
         />
       </div>
-      <button onClick={handleSubmit}>Añadir</button>
+      <button onClick={handleSubmit}>
+        {actorData === undefined ? "Añadir" : "Modificar"}
+      </button>
       {showMessage && (
         <AlertBox
           message={"Todos los campos son obligatorios"}
@@ -64,6 +79,8 @@ const ActorForm = () => {
   );
 };
 
-ActorForm.propTypes = {};
+ActorForm.propTypes = {
+  actorData: PropTypes.object,
+};
 
 export default ActorForm;

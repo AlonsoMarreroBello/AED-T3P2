@@ -4,7 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 
 import styles from "./ActorList.Styles";
-import TutorialService from "../../service/tutorial.service";
+import ActorService from "../../service/Actor.service";
 import Loader from "../loader/Loader";
 import { Button } from "@mui/material";
 import CustomEditModal from "../customModals/CustomEditModal";
@@ -12,9 +12,18 @@ import CustomDeleteModal from "../customModals/CustomDeleteModel";
 
 const paginationModel = { page: 0, pageSize: 10 };
 
+const emptyActor = {
+  id: 0,
+  firstName: "",
+  lastName: "",
+  lastUpdate: "",
+};
+
 const ActorsList = () => {
   const [actors, setActors] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [actorToEdit, setActorToEdit] = useState(emptyActor);
+  const [actorToDelete, setActorToDelete] = useState(emptyActor);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const columns = [
@@ -57,12 +66,18 @@ const ActorsList = () => {
       sortable: false,
       hideable: false,
       renderCell: (params) => (
-        <div>
-          <Button onClick={() => handleEdit(params.row.id)} color="primary">
-            <CustomEditModal />
-          </Button>
-          <Button onClick={() => handleDelete(params.row.id)} color="secondary">
-            <CustomDeleteModal />
+        <div style={{ display: "flex" }}>
+          <CustomEditModal
+            handleClick={() => handleEdit(params.row.id)}
+            actorToEdit={actorToEdit}
+            handleActorToEdit={() => setActorToEdit(emptyActor)}
+          />
+          <Button color="secondary">
+            <CustomDeleteModal
+              handleClick={() => handleDelete(params.row.id)}
+              actorToDelete={actorToDelete}
+              deleteActor={handleDeleteActor}
+            />
           </Button>
         </div>
       ),
@@ -70,28 +85,36 @@ const ActorsList = () => {
   ];
 
   const handleEdit = (id) => {
-    console.log("Edit:", id);
+    const actor = actors.find((actor) => actor.id === id);
+    setActorToEdit(actor);
   };
 
   const handleDelete = (id) => {
-    console.log("Delete:", id);
+    const actor = actors.find((actor) => actor.id === id);
+    setActorToDelete(actor);
+  };
+
+  const handleDeleteActor = (id) => {
+    ActorService.aDelete(id);
+    setActorToDelete(emptyActor);
   };
 
   useEffect(() => {
-    setLoading(true);
-    async function getActors() {
-      try {
-        const data = await TutorialService.aGetAll();
-        setActors(data);
-        setError(null);
-      } catch (e) {
-        setError(e);
-      } finally {
-        setLoading(false);
+    if (actorToEdit === emptyActor && actorToDelete === emptyActor) {
+      async function getActors() {
+        try {
+          const data = await ActorService.aGetAll();
+          setActors(data);
+          setError(null);
+        } catch (e) {
+          setError(e);
+        } finally {
+          setLoading(false);
+        }
       }
+      getActors();
     }
-    getActors();
-  }, []);
+  }, [actorToEdit, actorToDelete]);
 
   return (
     <div>
