@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
-
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 
 import styles from "./ActorList.Styles";
 import ActorService from "../../service/Actor.service";
 import Loader from "../loader/Loader";
-import { Button } from "@mui/material";
 import CustomEditModal from "../customModals/CustomEditModal";
-import CustomDeleteModal from "../customModals/CustomDeleteModel";
+import CustomDeleteModal from "../customModals/CustomDeleteModal";
 
 const paginationModel = { page: 0, pageSize: 10 };
 
@@ -24,63 +22,63 @@ const ActorsList = () => {
   const [actorToEdit, setActorToEdit] = useState(emptyActor);
   const [actorToDelete, setActorToDelete] = useState(emptyActor);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
-    { field: "firstName", headerName: "First name", width: 180 },
-    { field: "lastName", headerName: "Last name", width: 180 },
+    { field: "id", headerName: "ID", minWidth: 100 },
+    {
+      field: "firstName",
+      headerName: "Nombre",
+      minWidth: 200,
+    },
+    {
+      field: "lastName",
+      headerName: "Apellido",
+      minWidth: 200,
+    },
     {
       field: "lastUpdate",
-      headerName: "Last update",
-      width: 220,
+      headerName: "Ultima actualización",
+      minWidth: 250,
       valueFormatter: (value) => {
-        // Verificar si el valor es válido antes de crear un objeto Date
         const date = new Date(value);
-
-        if (isNaN(date.getTime())) {
-          // Si el valor no es una fecha válida, devolver una cadena vacía o un valor predeterminado
-          return "Fecha inválida";
-        }
-
-        const options = {
-          weekday: "long", // Día de la semana completo (ej. Lunes)
-          day: "numeric", // Día del mes (ej. 2)
-          month: "long", // Mes completo (ej. diciembre)
-          year: "numeric", // Añadir el año (ej. 2024)
-        };
-
-        // Formatear la fecha
-        const formatedDate = new Intl.DateTimeFormat("es-ES", options).format(
-          date
-        );
-        return formatedDate;
+        return isNaN(date.getTime())
+          ? "Fecha inválida"
+          : new Intl.DateTimeFormat("es-ES", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }).format(date);
       },
     },
     {
       field: "actions",
-      headerName: "",
-      flex: 1, // Expande esta columna para ocupar el espacio libre
-      minWidth: 200, // Define un ancho mínimo
+      headerName: "Acciones",
+      flex: 1,
+      maxWidth: 300,
+      minWidth: 300,
+      width: "40%",
       disableColumnMenu: true,
       sortable: false,
-      hideable: false,
       renderCell: (params) => (
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", gap: "10px" }}>
           <CustomEditModal
             handleClick={() => handleEdit(params.row.id)}
             actorToEdit={actorToEdit}
             handleActorToEdit={() => setActorToEdit(emptyActor)}
           />
-          <Button color="secondary">
-            <CustomDeleteModal
-              handleClick={() => handleDelete(params.row.id)}
-              actorToDelete={actorToDelete}
-              deleteActor={handleDeleteActor}
-            />
-          </Button>
+          <CustomDeleteModal
+            handleClick={() => handleDelete(params.row.id)}
+            actorToDelete={actorToDelete}
+            deleteActor={handleDeleteActor}
+          />
         </div>
       ),
+    },
+    {
+      disableColumnMenu: true,
+      sortable: false,
+      flex: 1, // Usamos flex para que ocupe el espacio sobrante
     },
   ];
 
@@ -105,9 +103,8 @@ const ActorsList = () => {
         try {
           const data = await ActorService.aGetAll();
           setActors(data);
-          setError(null);
         } catch (e) {
-          setError(e);
+          console.log(e);
         } finally {
           setLoading(false);
         }
@@ -117,32 +114,25 @@ const ActorsList = () => {
   }, [actorToEdit, actorToDelete]);
 
   return (
-    <div>
+    <div style={styles.container}>
+      <header style={styles.header}>
+        <h2>Lista de Actores</h2>
+      </header>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          margin: 2,
+          marginBottom: "20px",
         }}
       >
-        <h2>Lista de actores</h2>
-        <Button
-          size="small"
-          sx={{
-            height: "fit-content",
-            padding: 1,
-          }}
-          variant="outlined"
-          href="http://localhost:5173/actors/new"
-        >
-          Añadir actor
-        </Button>
+        <h3>Gestión de Actores</h3>
+        <CustomEditModal handleClick={() => {}} />
       </div>
       {loading ? (
         <Loader />
       ) : (
-        <Paper sx={{ height: screen.height * 0.6, width: "100%" }}>
+        <Paper sx={{ height: "70vh", width: "100%" }}>
           <DataGrid
             rows={actors}
             columns={columns}
@@ -153,11 +143,9 @@ const ActorsList = () => {
           />
         </Paper>
       )}
-      {error && <p>Pasaron rollos</p>}
+      <footer style={styles.footer}>© 2024 - Actor Management System</footer>
     </div>
   );
 };
-
-ActorsList.propTypes = {};
 
 export default ActorsList;

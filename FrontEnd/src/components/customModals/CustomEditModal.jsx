@@ -25,18 +25,37 @@ export default function CustomEditModal({
   handleActorToEdit,
 }) {
   const [open, setOpen] = useState(false);
+
   const handleOpen = () => {
-    handleClick();
-    setOpen(true);
+    handleClick(); // Llamada para manejar el evento de edición
+    setOpen(true); // Abre el modal
   };
+
   const handleClose = () => {
-    setOpen(false);
-    handleActorToEdit();
+    setOpen(false); // Cierra el modal
+    if (actorToEdit != undefined) {
+      handleActorToEdit(); // Resetea el actor a editar
+    }
   };
 
   return (
     <div>
-      <Button onClick={handleOpen}>Editar</Button>
+      <Button
+        sx={{
+          backgroundColor: "rgba(0, 123, 255, 0.7)", // Azul para editar
+          color: "white",
+          padding: "8px 16px",
+          borderRadius: "5px",
+          fontSize: "14px",
+          "&:hover": {
+            backgroundColor: "rgba(0, 123, 255, 0.9)", // Hover más fuerte
+            transition: "background-color 0.3s ease-in-out",
+          },
+        }}
+        onClick={handleOpen}
+      >
+        {actorToEdit !== undefined ? "Editar" : "Añadir Actor"}
+      </Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -52,7 +71,7 @@ export default function CustomEditModal({
       >
         <Fade in={open}>
           <Box sx={style}>
-            <ActorForm actorData={actorToEdit} />
+            <ActorForm handleClose={handleClose} actorData={actorToEdit} />
           </Box>
         </Fade>
       </Modal>

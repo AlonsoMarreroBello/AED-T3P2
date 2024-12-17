@@ -9,25 +9,71 @@ const styles = {
     "& .MuiDataGrid-cell": {
       padding: "10px",
       fontSize: "14px", // Tamaño de fuente de las celdas
-      color: "rgba(0, 0, 0, 0.87)", // Color de texto
-      backgroundColor: "#00000044", // Color de fondo de las celdas
+      color: "#ffffff", // Texto blanco para mejor contraste
+      backgroundColor: "rgba(0, 0, 0, 0.6)", // Fondo más oscuro
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      borderBottom: "1px solid rgba(255, 255, 255, 0.1)", // Separación entre celdas
     },
     // Estilo para la cabecera de las columnas
     "& .MuiDataGrid-columnHeader": {
-      backgroundColor: "#000000AA", // Color de fondo de la cabecera
-      color: "rgba(224, 224, 224, 1)", // Color del texto de la cabecera
+      backgroundColor: "rgba(78, 77, 77, 0.9)", // Fondo más oscuro para la cabecera
+      color: "#E0E0E0", // Color del texto de la cabecera
       fontWeight: "bold", // Fuente en negrita
       fontSize: "16px", // Tamaño de la fuente
+      textTransform: "uppercase", // Mayúsculas para un estilo moderno
+      borderBottom: "2px solid rgba(255, 255, 255, 0.2)", // Línea inferior
     },
     // Estilo para las filas
     "& .MuiDataGrid-row": {
       "&:hover": {
-        backgroundColor: "#00000011", // Color de fondo al pasar el mouse sobre la fila
+        backgroundColor: "rgba(255, 255, 255, 0.1)", // Fondo translúcido al pasar el mouse
+        transition: "background-color 0.2s ease-in-out", // Transición suave
+      },
+      "&:nth-of-type(odd)": {
+        backgroundColor: "rgba(0, 0, 0, 0.5)", // Fondo alternado para filas impares
+      },
+      "&:nth-of-type(even)": {
+        backgroundColor: "rgba(0, 0, 0, 0.4)", // Fondo alternado para filas pares
       },
     },
+  },
+  // Otros estilos globales
+  header: {
+    backgroundColor: "rgba(0, 0, 0, 0.9)",
+    padding: "20px",
+    color: "#ffffff",
+    fontWeight: "bold",
+    textAlign: "center",
+    textTransform: "uppercase",
+  },
+  footer: {
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    padding: "10px 20px",
+    color: "#ffffff",
+    textAlign: "center",
+    fontSize: "14px",
+    borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+  },
+  button: {
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    color: "#ffffff",
+    padding: "10px 15px",
+    borderRadius: "5px",
+    fontSize: "14px",
+    border: "1px solid rgba(255, 255, 255, 0.3)",
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.2)",
+      transition: "background-color 0.2s ease-in-out",
+    },
+  },
+  container: {
+    margin: "0 auto",
+    maxWidth: "80%",
+    padding: "20px",
+    backgroundColor: "rgba(0, 0, 0, 0.05)",
+    borderRadius: "10px",
   },
 };
 

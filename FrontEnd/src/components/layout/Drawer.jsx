@@ -8,21 +8,41 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { useState } from "react";
 
+const styles = {
+  iconButton: {
+    color: "#fff", // Color blanco para el icono
+    marginRight: 2, // Separación del icono respecto al resto
+  },
+  drawer: {
+    width: 250, // Ancho del menú desplegable
+    backgroundColor: "#f5f5f5", // Fondo claro para el cajón
+    height: "100%", // Ocupa toda la altura del viewport
+  },
+  listItem: {
+    padding: "10px 16px", // Espaciado interno de los elementos
+    color: "#333", // Color del texto
+    textDecoration: "none", // Elimina el subrayado de los enlaces
+    "&:hover": {
+      backgroundColor: "#ddd", // Fondo gris al pasar el ratón
+    },
+  },
+};
+
 export default function CustomDrawer() {
   const [open, setOpen] = useState(false);
 
-  const routes = ["/actors", "", "", ""];
+  const routes = ["/", "/actors"];
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={styles.drawer} role="presentation" onClick={toggleDrawer(false)}>
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+        {["Home", "Actors"].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <a href={routes[index]}>
+            <a href={routes[index]} style={styles.listItem}>
               <ListItemButton>
                 <ListItemText primary={text} />
               </ListItemButton>
@@ -38,9 +58,8 @@ export default function CustomDrawer() {
       <IconButton
         size="large"
         edge="start"
-        color="inherit"
         aria-label="menu"
-        sx={{ mr: 2 }}
+        sx={styles.iconButton}
         onClick={toggleDrawer(true)}
       >
         <MenuIcon />
